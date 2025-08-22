@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>لوحة توصيات التداول — عينة العميل</title>
+
+  <!-- ===== CSS (مضمّن) ===== -->
+  <style>
+    :root{
+      --bg:#0b1020;
+      --card:#121932;
+      --muted:#8aa0c3;
+      --text:#eef3ff;
+      --primary:#4f7cff;
+      --primary-600:#3d63d9;
+      --danger:#ff5d5d;
+      --success:#2ecc71;
+      --border:#223056;
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial}
+    .container{max-width:1100px;margin:auto;padding:16px}
+    header{padding-top:24px}
+    h1{margin:0 0 6px 0;font-size:26px}
+    .subtitle{margin:0;color:var(--muted);font-size:14px}
+
+    .grid{display:grid;grid-template-columns:1fr;gap:16px}
+    @media(min-width:960px){.grid{grid-template-columns: 1fr 1fr}}
+
+    .card{
+      background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02));
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:16px;
+      box-shadow:0 8px 30px rgba(0,0,0,0.25);
+    }
+    .card h2{margin:0 0 12px 0}
+
+    .grid-2{display:grid;grid-template-columns:1fr;gap:12px}
+    .grid-3{display:grid;grid-template-columns:1fr;gap:12px}
+    @media(min-width:720px){
+      .grid-2{grid-template-columns:1fr 1fr}
+      .grid-3{grid-template-columns:repeat(3,1fr)}
+    }
+
+    .field label{display:block;margin-bottom:6px;color:var(--muted);font-size:13px}
+    .field label span{color:#ffb34f}
+    .field input{
+      width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);
+      background:#0d1530;color:var(--text);outline:none
+    }
+    .field input::placeholder{color:#6e84a8}
+
+    .actions{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
+    .btn{
+      padding:10px 14px;border-radius:12px;border:1px solid var(--border);
+      background:#182246;color:var(--text);cursor:pointer
+    }
+    .btn:hover{filter:brightness(1.08)}
+    .btn.primary{background:var(--primary);border-color:transparent}
+    .btn.primary:hover{background:var(--primary-600)}
+    .btn.ghost{background:transparent}
+    .btn.danger{background:var(--danger);border-color:transparent}
+
+    .table-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+    .toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .search{
+      padding:10px 12px;border-radius:12px;border:1px solid var(--border);
+      background:#0d1530;color:var(--text);min-width:200px
+    }
+
+    .table-wrap{overflow:auto;border:1px solid var(--border);border-radius:12px}
+    table{width:100%;border-collapse:collapse;font-size:14px;min-width:900px}
+    th,td{padding:10px 8px;border-bottom:1px solid var(--border);text-align:center}
+    th{position:sticky;top:0;background:#122046;z-index:1}
+    tr:hover td{background:#0f1a38}
+
+    .badge{
+      display:inline-block;padding:4px 8px;border-radius:8px;font-size:12px
+    }
+    .badge.success{background:rgba(46,204,113,.15);color:var(--success);border:1px solid rgba(46,204,113,.35)}
+    .badge.muted{background:rgba(255,255,255,.06);color:var(--muted);border:1px solid var(--border)}
+
+    .footer{opacity:.7;text-align:center;margin:24px 0}
+    .hint{color:var(--muted);margin-top:10px}
+  </style>
+</head>
+<body>
+  <header class="container">
+    <h1>لوحة توصيات التداول (عينة العميل)</h1>
+    <p class="subtitle">إدخال توصية ➜ عرض في الجدول ➜ محاكاة التنفيذ ➜ تصدير CSV</p>
+  </header>
+
+  <main class="container grid">
+    <!-- نموذج التوصية -->
+    <section class="card">
+      <h2>إدخال توصية جديدة</h2>
+      <form id="signalForm">
+        <div class="grid-2">
+          <div class="field">
+            <label>اسم العملة <span>*</span></label>
+            <input type="text" name="currency" placeholder="مثال: BTCUSDT" required />
+          </div>
+          <div class="field">
+            <label>مجال الدخول <span>*</span></label>
+            <input type="text" name="entry" placeholder="مثال: 25000 - 25200" required />
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <div class="field">
+            <label>الهدف 1</label>
+            <input type="text" name="target1" placeholder="مثال: 26000" />
+          </div>
+          <div class="field">
+            <label>الهدف 2</label>
+            <input type="text" name="target2" placeholder="مثال: 26500" />
+          </div>
+          <div class="field">
+            <label>الهدف 3</label>
+            <input type="text" name="target3" placeholder="مثال: 27000" />
+          </div>
+          <div class="field">
+            <label>الهدف 4</label>
+            <input type="text" name="target4" placeholder="مثال: 27500" />
+          </div>
+          <div class="field">
+            <label>الهدف 5</label>
+            <input type="text" name="target5" placeholder="مثال: 28000" />
+          </div>
+          <div class="field">
+            <label>وقف الخسارة</label>
+            <input type="text" name="stopLoss" placeholder="مثال: 24500" />
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label>معلوماتك الشخصية</label>
+            <input type="text" name="personalInfo" placeholder="اسمك/جهتك" />
+          </div>
+          <div class="field">
+            <label>اسم أو معرّف القناة</label>
+            <input type="text" name="channelName" placeholder="@channel أو اسم القناة" />
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn primary" type="submit">إضافة التوصية</button>
+          <button class="btn ghost" type="reset">تفريغ الحقول</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- الجدول والعمليات -->
+    <section class="card">
+      <div class="table-head">
+        <h2>التوصيات المدخلة</h2>
+        <div class="toolbar">
+          <input id="searchInput" class="search" type="search" placeholder="بحث..." />
+          <button id="exportCsvBtn" class="btn">تصدير CSV</button>
+          <button id="clearAllBtn" class="btn danger">حذف الكل</button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="signalsTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>العملة</th>
+              <th>الدخول</th>
+              <th>هدف1</th>
+              <th>هدف2</th>
+              <th>هدف3</th>
+              <th>هدف4</th>
+              <th>هدف5</th>
+              <th>وقف الخسارة</th>
+              <th>معلومات شخصية</th>
+              <th>القناة</th>
+              <th>وقت المحاكاة</th>
+              <th>إجراءات</th>
+            </tr>
+          </thead>
+          <tbody><!-- يمتلئ ديناميكياً --></tbody>
+        </table>
+      </div>
+      <p class="hint">💾 التوصيات تُحفظ تلقائيًا محليًا (LocalStorage) على جهازك.</p>
+    </section>
+  </main>
+
+  <footer class="container footer">
+    <small>هذه عينة واجهة لإثبات القدرة — لا تنفّذ صفقات فعلية. الربط مع Binance/Telegram يتم لاحقًا بمفاتيح العميل للحفاظ على الخصوصية.</small>
+  </footer>
+
+  <!-- ===== JavaScript (مضمّن) ===== -->
+  <script>
+    // ====== تخزين محلي ======
+    const STORAGE_KEY = "signals-v1";
+
+    function loadSignals() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        console.warn("LocalStorage read error", e);
+        return [];
+      }
+    }
+    function saveSignals(list) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    }
+    function nowStamp() {
+      const d = new Date();
+      const pad = n => String(n).padStart(2, "0");
+      return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+    }
+
+    let signals = loadSignals();
+
+    // عناصر DOM
+    const form = document.getElementById("signalForm");
+    const tableBody = document.querySelector("#signalsTable tbody");
+    const exportBtn = document.getElementById("exportCsvBtn");
+    const clearAllBtn = document.getElementById("clearAllBtn");
+    const searchInput = document.getElementById("searchInput");
+
+    // رسم الجدول
+    function renderTable(list = signals) {
+      tableBody.innerHTML = "";
+      list.forEach((s, idx) => {
+        const tr = document.createElement("tr");
+
+        const actions = `
+          <div class="row-actions" style="display:flex;gap:6px;justify-content:center">
+            <button class="btn" data-action="simulate" data-id="${s.id}">Simulate</button>
+            <button class="btn" data-action="edit" data-id="${s.id}">تعديل</button>
+            <button class="btn danger" data-action="delete" data-id="${s.id}">حذف</button>
+          </div>
+        `;
+        const simBadge = s.simulatedAt ? `<span class="badge success">تمت ${s.simulatedAt}</span>` : `<span class="badge muted">-</span>`;
+
+        tr.innerHTML = `
+          <td>${idx + 1}</td>
+          <td>${s.currency || ""}</td>
+          <td>${s.entry || ""}</td>
+          <td>${s.target1 || ""}</td>
+          <td>${s.target2 || ""}</td>
+          <td>${s.target3 || ""}</td>
+          <td>${s.target4 || ""}</td>
+          <td>${s.target5 || ""}</td>
+          <td>${s.stopLoss || ""}</td>
+          <td>${s.personalInfo || ""}</td>
+          <td>${s.channelName || ""}</td>
+          <td>${simBadge}</td>
+          <td>${actions}</td>
+        `;
+        tableBody.appendChild(tr);
+      });
+    }
+
+    // إضافة/تعديل توصية
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const fd = new FormData(form);
+
+      const record = {
+        id: form.dataset.editId ? Number(form.dataset.editId) : Date.now(),
+        currency: fd.get("currency")?.trim(),
+        entry: fd.get("entry")?.trim(),
+        target1: fd.get("target1")?.trim(),
+        target2: fd.get("target2")?.trim(),
+        target3: fd.get("target3")?.trim(),
+        target4: fd.get("target4")?.trim(),
+        target5: fd.get("target5")?.trim(),
+        stopLoss: fd.get("stopLoss")?.trim(),
+        personalInfo: fd.get("personalInfo")?.trim(),
+        channelName: fd.get("channelName")?.trim(),
+        simulatedAt: form.dataset.editId ? (signals.find(x=>x.id===Number(form.dataset.editId))?.simulatedAt || null) : null
+      };
+
+      if (!record.currency || !record.entry) {
+        alert("الرجاء تعبئة اسم العملة ومجال الدخول.");
+        return;
+      }
+
+      if (form.dataset.editId) {
+        // تعديل
+        signals = signals.map(s => s.id === record.id ? record : s);
+        delete form.dataset.editId;
+      } else {
+        // إضافة
+        signals.unshift(record);
+      }
+
+      saveSignals(signals);
+      form.reset();
+      renderTable();
+      window.scrollTo({top: document.body.scrollHeight, behavior:"smooth"});
+    });
+
+    // إجراءات الصف (محاكاة/تعديل/حذف)
+    tableBody.addEventListener("click", (e) => {
+      const btn = e.target.closest("button");
+      if (!btn) return;
+      const id = Number(btn.dataset.id);
+      const action = btn.dataset.action;
+      const idx = signals.findIndex(s => s.id === id);
+      if (idx < 0) return;
+
+      if (action === "simulate") {
+        signals[idx].simulatedAt = nowStamp();
+        saveSignals(signals);
+        renderTable();
+        alert(`تم تنفيذ الصفقة التجريبية على ${signals[idx].currency} في ${signals[idx].simulatedAt}`);
+      }
+
+      if (action === "edit") {
+        const s = signals[idx];
+        form.currency.value = s.currency || "";
+        form.entry.value = s.entry || "";
+        form.target1.value = s.target1 || "";
+        form.target2.value = s.target2 || "";
+        form.target3.value = s.target3 || "";
+        form.target4.value = s.target4 || "";
+        form.target5.value = s.target5 || "";
+        form.stopLoss.value = s.stopLoss || "";
+        form.personalInfo.value = s.personalInfo || "";
+        form.channelName.value = s.channelName || "";
+        form.dataset.editId = String(s.id);
+        window.scrollTo({top:0,behavior:"smooth"});
+      }
+
+      if (action === "delete") {
+        if (confirm("تأكيد حذف هذه التوصية؟")) {
+          signals.splice(idx, 1);
+          saveSignals(signals);
+          renderTable();
+        }
+      }
+    });
+
+    // البحث
+    searchInput.addEventListener("input", () => {
+      const q = searchInput.value.trim().toLowerCase();
+      if (!q) return renderTable();
+      const filtered = signals.filter(s =>
+        Object.values(s).some(v => (v ?? "").toString().toLowerCase().includes(q))
+      );
+      renderTable(filtered);
+    });
+
+    // تصدير CSV
+    exportBtn.addEventListener("click", () => {
+      if (!signals.length) {
+        alert("لا توجد بيانات لتصديرها.");
+        return;
+      }
+      const headers = ["العملة","مجال الدخول","الهدف1","الهدف2","الهدف3","الهدف4","الهدف5","وقف الخسارة","معلومات شخصية","القناة","وقت المحاكاة"];
+      const rows = signals.map(s => [
+        s.currency ?? "", s.entry ?? "", s.target1 ?? "", s.target2 ?? "", s.target3 ?? "",
+        s.target4 ?? "", s.target5 ?? "", s.stopLoss ?? "", s.personalInfo ?? "", s.channelName ?? "",
+        s.simulatedAt ?? ""
+      ]);
+
+      const csv = [headers, ...rows].map(r =>
+        r.map(val => `"${String(val).replaceAll('"','""')}"`).join(",")
+      ).join("\n");
+
+      const blob = new Blob([csv], {type: "text/csv;charset=utf-8"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `signals_${Date.now()}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      URL.revokeObjectURL(url);
+      a.remove();
+    });
+
+    // حذف الكل
+    clearAllBtn.addEventListener("click", () => {
+      if (!signals.length) return;
+      if (confirm("تأكيد حذف جميع التوصيات؟")) {
+        signals = [];
+        saveSignals(signals);
+        renderTable();
+      }
+    });
+
+    // بدء التشغيل
+    renderTable();
+  </script>
+</body>
+</html>
